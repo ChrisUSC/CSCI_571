@@ -1,0 +1,42 @@
+a {
+  text-decoration: none;
+}
+
+img {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detailCard {
+  margin: auto;
+  margin-top: 8px;
+  width: 90%;
+  border-radius: 10px;
+}
+
+.card-title {
+  margin: 5px;
+  font-style: italic;
+}
+
+
+.card{
+  border: 1;
+}
+.styleCard.card{
+  border: 1;
+}
+
+.card .detailCard img {
+}
+
+.loadingDiv {
+  display: block;
+  margin: auto;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 20px;
+}

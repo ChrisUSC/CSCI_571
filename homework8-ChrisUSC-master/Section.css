@@ -1,0 +1,111 @@
+
+a{
+  text-decoration: none;
+  color: black;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+
+}
+
+a:active {
+  text-decoration: none;
+  color: black;
+
+}
+
+.styleCard {
+  margin: auto;
+  width: 90%;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.styleCard img {
+  border: 0;
+}
+
+#world {
+  background-color: #7C4EFF !important;
+  color: white;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+}
+
+#politics {
+  background-color: #419488 !important;
+  color: white;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+#Business {
+  background-color: #4696EC !important;
+  color: white;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+#Technology {
+  background-color: #CEDC39 !important;
+  color: black !important;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+#sport {
+  background-color: #F6C244 !important;
+  color: black !important;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+#sports {
+  background-color: #F6C244 !important;
+  color: black !important;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+#Guardian {
+  background-color: #14284A !important;
+  color: white;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+#NYT {
+  background-color: #DDDDDD !important;
+  color: black;
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 4px;
+
+}
+
+.card-text {
+  border-radius: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+
+}

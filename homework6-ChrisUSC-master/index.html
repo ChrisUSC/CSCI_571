@@ -1,0 +1,1191 @@
+
+<HTML>
+
+<HEAD>
+  <style>
+    body {
+      margin-top: 30px;
+      font-family: Georgia; //This is the font used in the sample pages
+      text-overflow: ellipsis;
+    }
+
+    .left-buttons {
+      width: 10%;
+      min-width: 10%;
+      height: 300px;
+      display: block;
+      text-align: center;
+      float: left;
+      margin-top: 0px;
+      margin-left: 7%;
+    }
+
+
+    #button1 {
+      background-color: 474747;
+      border-radius: 10px 10px 0 0;
+      float: right;
+      color: white;
+      min-width: 200px;
+      font-size: 24px;
+      min-height: 70px;
+      transition: 0.2s;
+    }
+
+    #button2 {
+      color: black;
+      border-radius: 0 0 10px 10px;
+      float: right;
+      min-width: 200px;
+      font-size: 24px;
+      min-height: 70px;
+      transition: .2s;
+    }
+
+    #search,
+    #clear {
+      color: inherit;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+      width: 80px;
+      height: 40px;
+      transition: .2s;
+    }
+
+    #showMoreButton {
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+      width: 120px;
+      height: 40px;
+    }
+
+    #button1:hover {
+      background-color: green !important;
+    }
+
+    #button2:hover {
+      background-color: green !important;
+    }
+
+    #search:hover {
+      background-color: green !important;
+    }
+
+    #clear:hover {
+      background-color: green !important;
+    }
+
+    .moreLoaded {
+      display: none;
+    }
+
+    .content1 {
+      margin-left: 20%;
+      margin-right: 20%;
+    }
+
+    .content2 {
+      margin-left: 25%;
+      margin-right: 25%;
+      height: 200px;
+      background-color: F2F2F2;
+
+    }
+
+    .top {
+      display: flex;
+      width: 100%;
+
+    }
+
+    .wordcloud {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .topStory {
+      position: relative;
+      display: inline-block;
+      /* Make the width of box same as image */
+      width: 100%;
+      height: 500px;
+      background-repeat: no-repeat;
+      text-align: center;
+      background-size: cover;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .topStory .Headline {
+      position: absolute;
+      z-index: 999;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      top: 60%;
+      /* Adjust this value to move the positioned div up and down */
+      text-align: center;
+      width: 100%;
+      /* Set the width of the positioned div */
+      height: 40%;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    #title {
+      font-size: 30px;
+      color: white;
+    }
+
+    #description {
+      font-size: 16px;
+      margin: 0 auto;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    table {
+      margin-left: auto;
+      margin-right: auto;
+      vertical-align: top;
+      display: table;
+      border-spacing: 0;
+      table-layout: fixed;
+    }
+
+    tr {
+      vertical-align: top;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 20px;
+      height: 150px;
+    }
+
+    td {
+      vertical-align: top;
+    }
+
+    .newsHeadline {
+      font-weight: bold;
+      text-align: center;
+      font-size: 36px;
+      border-bottom: 2px dashed;
+    }
+
+    #cnn,
+    #fox {
+      margin-left: 0;
+      margin-right: 0;
+      text-align: center;
+      width: 100%;
+      height: 600px
+    }
+
+    tbody {
+      width: 100%;
+    }
+
+    #cnn_0,
+    #cnn_1,
+    #cnn_2,
+    #cnn_3,
+    #fox_0,
+    #fox_1,
+    #fox_2,
+    #fox_3 {
+      text-align: center;
+      width: 23%;
+      display: inline-block;
+      background-color: F2F2F2;
+      height: 500px;
+      margin: 0 auto;
+      margin-left: 3px;
+      margin-right: 3px;
+      height: 550px;
+      border-radius: 10px;
+    }
+
+    #result_0,
+    #result_1,
+    #result_2,
+    #result_3,
+    #result_4,
+    #result_5,
+    #result_6,
+    #result_7,
+    #result_8,
+    #result_9,
+    #result_10,
+    #result_11,
+    #result_12,
+    #result_13,
+    #result_14 {
+      background-color: ECECEC;
+      width: 100%;
+      margin-left: 2px;
+      margin-right: 2px;
+      height: 200px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    td {
+      overflow: hidden;
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+  <meta charset="utf-8">
+
+
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v4.js"></script>
+
+  <!-- Load d3-cloud -->
+  <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+
+
+
+</HEAD>
+
+<body onload="changeMainPage(renderHome)">
+
+
+  <div class="container" style="width: 100%; height: 100%;">
+    <div class="left-buttons">
+      <button id="button1" style="backgroundColor: #474747;"> Google News </Button>
+      <button id="button2"> Search </Button>
+    </div>
+    <div id="content1" class="content1">
+      <div id="top">
+        <table>
+          <tr>
+            <td style="width: 100%;">
+              <div class="topStory" id="topStory">
+                <div class="Headline">
+                  <a style="color: white;" href="" target="_blank" id="title"></a>
+                  <div id="description"></div>
+                </div>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <div class="wordcloud" id="wordcloud" style="background-color: F2F2F2;"></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="cnn">
+        <h1 class="newsHeadline">CNN</h1>
+        <table>
+          <tr>
+            <td id="cnn_0" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="cnn_0_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="cnn_0_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px; margin-right: 10px;" id="cnn_0_headline"></div><br>
+                <div style="width: 100%;" id="cnn_0_description"></div>
+              </a>
+            </td>
+            <td id="cnn_1" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="cnn_1_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="cnn_1_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="cnn_1_headline"></div><br>
+                <div style="width: 100%" id="cnn_1_description"></div>
+              </a>
+            </td>
+            <td id="cnn_2" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="cnn_2_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="cnn_2_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="cnn_2_headline"></div><br>
+                <div style="width: 100%" id="cnn_2_description"></div>
+              </a>
+            </td>
+            <td id="cnn_3" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="cnn_3_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="cnn_3_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="cnn_3_headline"></div> <br>
+                <div style="width: 100%" id="cnn_3_description"></div>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      <div id="fox">
+        <h1 class="newsHeadline">Fox News</h1>
+        <table>
+          <tr>
+            <td id="fox_0" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="fox_0_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="fox_0_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="fox_0_headline"></div><br>
+                <div style="width: 100%;" id="fox_0_description"></div>
+              </a>
+            </td>
+            <td id="fox_1" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="fox_1_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="fox_1_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="fox_1_headline"></div><br>
+                <div style="width: 100%;" id="fox_1_description"></div>
+              </a>
+            </td>
+            <td id="fox_2" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="fox_2_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="fox_2_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="fox_2_headline"></div><br>
+                <div style="width: 100%; " id="fox_2_description"></div>
+              </a>
+            </td>
+            <td id="fox_3" style="width: 24%; margin-left: 2px; margin-right: 2px;">
+              <a id="fox_3_link" style="color: black;" href="" target="_blank">
+                <div style="width: 100%; height: 200; border-radius: 8px; background-size: cover;  background-repeat: no-repeat;" id="fox_3_img"></div>
+                <div style="width: 100%; font-weight: bold; font-size: 18px;" id="fox_3_headline"></div> <br>
+                <div style="width: 100%;" id="fox_3_description"></div>
+              </a>
+            </td>
+          </tr>
+        </table>
+        <br><br>
+      </div>
+    </div>
+    <div id="content2" class="content2">
+      <div style="display: none;">
+        <input type="date" id="placeholder" name="placeholder">
+      </div>
+      <br>
+      <form id="searchForm" style="text-align:center; font-size: 16px;" action="javascript:;" onsubmit="makeSearch(this)">
+        &emsp; <span> Keyword</span><span style="color:red;">*&emsp;</span> <input type="text" id="keyword" name="keyword" required></input>
+        &emsp; <span>From</span><span style="color:red;">*&emsp;</span> <input type="date" id="from" name="from" required>
+        &emsp; <span>To</span><span style="color:red;">*&emsp;</span> <input type="date" id="to" name="to" required>
+
+        <br>
+        <br>
+
+        &emsp; Category&emsp;
+        <select id="category" style="min-width: 120px;" onmousedown="this.value='';" onchange="findSources(this.value);">
+          <option value="all" selected>all</option>
+          <option value="Business">Business</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="General">General</option>
+          <option value="Health">Health</option>
+          <option value="Science">Science</option>
+          <option value="Sports">Sports</option>
+          <option value="Technology">Technology</option>
+        </select>
+        &emsp;Source&emsp;
+        <select id="source" style="min-width: 155px;">
+          <option value="all" selected>all</option>
+        </select>
+        <br>
+        <br>
+        <input style="background-color: F2F2F2; margin: 10px;" type="submit" id="search" value="Search"></input>
+        <input style="background-color: F2F2F2; margin: 10px;" type="button" id="clear" value="Clear"></input>
+        <br><br>
+
+      </form>
+      <br>
+      <div id="articles">
+        <table id="results" style="width: 100%; ">
+          <tr class="resultElement" id="result_0">
+            <td style="width: 100%;">
+              <span id="close_0" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_0" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_0"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_0_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_0_author"></div>
+                  <div style="width: 100%; display:none;" id="result_0_source"></div>
+                  <div style="width: 100%; display:none;" id="result_0_date"></div>
+                  <div style="width: 100%;" id="result_0_description"></div>
+                  <div style="width: 100%; display:none;" id="result_0_link_div"><a href="" target="_blank" id="result_0_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_1">
+            <td style="width: 100%;">
+              <span id="close_1" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_1" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_1"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_1_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_1_author"></div>
+                  <div style="width: 100%; display:none;" id="result_1_source"></div>
+                  <div style="width: 100%; display:none;" id="result_1_date"></div>
+                  <div style="width: 100%;" id="result_1_description"></div>
+                  <div style="width: 100%; display:none;" id="result_1_link_div"><a href="" target="_blank" id="result_1_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_2">
+            <td style="width: 100%;">
+              <span id="close_2" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_2" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_2"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_2_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_2_author"></div>
+                  <div style="width: 100%; display:none;" id="result_2_source"></div>
+                  <div style="width: 100%; display:none;" id="result_2_date"></div>
+                  <div style="width: 100%;" id="result_2_description"></div>
+                  <div style="width: 100%; display:none;" id="result_2_link_div"><a href="" target="_blank" id="result_2_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_3">
+            <td style="width: 100%;">
+              <span id="close_3" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_3" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_3"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_3_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_3_author"></div>
+                  <div style="width: 100%; display:none;" id="result_3_source"></div>
+                  <div style="width: 100%; display:none;" id="result_3_date"></div>
+                  <div style="width: 100%;" id="result_3_description"></div>
+                  <div style="width: 100%; display:none;" id="result_3_link_div"><a href="" target="_blank" id="result_3_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_4">
+            <td style="width: 100%;">
+              <span id="close_4" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_4" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_4"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_4_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_4_author"></div>
+                  <div style="width: 100%; display:none;" id="result_4_source"></div>
+                  <div style="width: 100%; display:none;" id="result_4_date"></div>
+                  <div style="width: 100%;" id="result_4_description"></div>
+                  <div style="width: 100%; display:none;" id="result_4_link_div"><a href="" target="_blank" id="result_4_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_5">
+            <td style="width: 100%;">
+              <span id="close_5" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_5" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_5"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_5_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_5_author"></div>
+                  <div style="width: 100%; display:none;" id="result_5_source"></div>
+                  <div style="width: 100%; display:none;" id="result_5_date"></div>
+                  <div style="width: 100%;" id="result_5_description"></div>
+                  <div style="width: 100%; display:none;" id="result_5_link_div"><a href="" target="_blank" id="result_5_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_6">
+            <td style="width: 100%;">
+              <span id="close_6" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_6" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_6"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_6_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_6_author"></div>
+                  <div style="width: 100%; display:none;" id="result_6_source"></div>
+                  <div style="width: 100%; display:none;" id="result_6_date"></div>
+                  <div style="width: 100%;" id="result_6_description"></div>
+                  <div style="width: 100%; display:none;" id="result_6_link_div"><a href="" target="_blank" id="result_6_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_7">
+            <td style="width: 100%;">
+              <span id="close_7" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_7" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_7"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_7_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_7_author"></div>
+                  <div style="width: 100%; display:none;" id="result_7_source"></div>
+                  <div style="width: 100%; display:none;" id="result_7_date"></div>
+                  <div style="width: 100%;" id="result_7_description"></div>
+                  <div style="width: 100%; display:none;" id="result_7_link_div"><a href="" target="_blank" id="result_7_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_8">
+            <td style="width: 100%;">
+              <span id="close_8" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_8" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_8"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_8_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_8_author"></div>
+                  <div style="width: 100%; display:none;" id="result_8_source"></div>
+                  <div style="width: 100%; display:none;" id="result_8_date"></div>
+                  <div style="width: 100%;" id="result_8_description"></div>
+                  <div style="width: 100%; display:none;" id="result_8_link_div"><a href="" target="_blank" id="result_8_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_9">
+            <td style="width: 100%;">
+              <span id="close_9" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_9" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_9"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_9_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_9_author"></div>
+                  <div style="width: 100%; display:none;" id="result_9_source"></div>
+                  <div style="width: 100%; display:none;" id="result_9_date"></div>
+                  <div style="width: 100%;" id="result_9_description"></div>
+                  <div style="width: 100%; display:none;" id="result_9_link_div"><a href="" target="_blank" id="result_9_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_10">
+            <td style="width: 100%;">
+              <span id="close_10" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_10" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_10"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_10_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_10_author"></div>
+                  <div style="width: 100%; display:none;" id="result_10_source"></div>
+                  <div style="width: 100%; display:none;" id="result_10_date"></div>
+                  <div style="width: 100%;" id="result_10_description"></div>
+                  <div style="width: 100%; display:none;" id="result_10_link_div"><a href="" target="_blank" id="result_10_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_11">
+            <td style="width: 100%;">
+              <span id="close_11" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_11" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_11"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_11_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_11_author"></div>
+                  <div style="width: 100%; display:none;" id="result_11_source"></div>
+                  <div style="width: 100%; display:none;" id="result_11_date"></div>
+                  <div style="width: 100%;" id="result_11_description"></div>
+                  <div style="width: 100%; display:none;" id="result_11_link_div"><a href="" target="_blank" id="result_11_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_12">
+            <td style="width: 100%;">
+              <span id="close_12" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_12" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_12"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_12_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_12_author"></div>
+                  <div style="width: 100%; display:none;" id="result_12_source"></div>
+                  <div style="width: 100%; display:none;" id="result_12_date"></div>
+                  <div style="width: 100%;" id="result_12_description"></div>
+                  <div style="width: 100%; display:none;" id="result_12_link_div"><a href="" target="_blank" id="result_12_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_13">
+            <td style="width: 100%;">
+              <span id="close_13" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_13" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_13"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_13_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_13_author"></div>
+                  <div style="width: 100%; display:none;" id="result_13_source"></div>
+                  <div style="width: 100%; display:none;" id="result_13_date"></div>
+                  <div style="width: 100%;" id="result_13_description"></div>
+                  <div style="width: 100%; display:none;" id="result_13_link_div"><a href="" target="_blank" id="result_13_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="moreLoaded" style="height: 8px;">
+          </tr>
+          <tr class="resultElement" id="result_14">
+            <td style="width: 100%;">
+              <span id="close_14" style="font-weight: bold; float:right; margin-right: 5px; display: none;"><img width=15px height=15px src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Black_close_x.svg"></span>
+              <div style="width: 100%;margin-top: 30px;" id="expand_14" ;>
+                <div style="margin: 30px; display: inherit; float: left; width: 120px; height: 120px; background-size: cover;  background-repeat: no-repeat;" id="result_img_14"></div>
+                <div style="margin-left: 180px;">
+                  <div style="width: 100%; font-weight: bold; font-size: 18px;" id="result_14_headline"></div>
+                  <div style="width: 100%; display:none;" id="result_14_author"></div>
+                  <div style="width: 100%; display:none;" id="result_14_source"></div>
+                  <div style="width: 100%; display:none;" id="result_14_date"></div>
+                  <div style="width: 100%;" id="result_14_description"></div>
+                  <div style="width: 100%; display:none;" id="result_14_link_div"><a href="" target="_blank" id="result_14_link">See Original Post</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+      <div id="showmore" style="display: none; text-align: center; margin-left: auto; margin-right: auto;">
+        <form id="searchForm" style="text-align:center; font-size: 16px;" action="javascript:;" onsubmit="loadMore()">
+          <input style="background-color: F2F2F2; margin: 10px;" type="submit" id="showMoreButton" value="Show More"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    var global_results;
+    var showMore;
+    var svg;
+    var layout;
+    // Word cloud
+    function loadWordCloud(myWords) {
+      var w = window.innerWidth * .25;
+      var margin = {
+          top: 10,
+          right: 10,
+          bottom: 10,
+          left: 10
+        },
+        width = w - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+      // append the svg object to the body of the page
+      d3.select("svg").remove();
+      svg = d3.select("#wordcloud").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
+      // Wordcloud features that are different from one word to the other must be here
+      layout = d3.layout.cloud()
+        .size([width, height])
+        .words(myWords.map(function(d) {
+          return {
+            text: d.word,
+            size: d.size
+          };
+        }))
+        .padding(5) //space between words
+        .rotate(function() {
+          return ~~(Math.random() * 2) * 90;
+        })
+        .fontSize(function(d) {
+          return d.size;
+        }) // font size of words
+        .on("end", draw);
+      layout.start();
+      draw(myWords)
+    }
+    // This function takes the output of 'layout' above and draw the words
+    // Wordcloud features that are THE SAME from one word to the other can be here
+    function draw(words) {
+      svg
+        .append("g")
+        .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+        .selectAll("text")
+        .data(words)
+        .enter().append("text")
+        .style("font-size", function(d) {
+          return d.size;
+        })
+        .style("fill", "#000")
+        .attr("text-anchor", "middle")
+        .style("font-family", "Impact")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) {
+          return d.text;
+        });
+    }
+
+    //End of wordcloud
+
+    function loadMore() {
+      var x = document.getElementById("result_5");
+      var changed = "false";
+      var resultCount = global_results.length / 7;
+      if (x.style.display != "table") {
+        showMore = 1;
+        changed = "true";
+        var x = document.getElementsByClassName("moreLoaded");
+        for (var i = 0; i < x.length; i++) {
+          x[i].display = "table";
+        }
+        for (var i = 5; i < resultCount; i = i + 1) {
+          var findID = "result_" + i;
+          var e = document.getElementById(findID);
+          e.style.display = "table";
+          var imageTag = "result_img_" + i;
+          var imageURL = "url('" + global_results[i * 7 + 0] + "')";
+          var headlineTag = "result_" + i + "_headline";
+          var descriptionTag = "result_" + i + "_description";
+          document.getElementById(headlineTag).innerHTML = global_results[i * 7 + 1];
+          document.getElementById(descriptionTag).innerHTML = global_results[i * 7 + 2];
+          document.getElementById(imageTag).style.backgroundImage = imageURL;
+        }
+        document.getElementById("showMoreButton").value = "Show Less";
+      }
+      var x = document.getElementById("result_5");
+      if (x.style.display == "table" && changed == "false") {
+        for (var i = 5; i < resultCount; i = i + 1) {
+          var findID = "result_" + i;
+          var e = document.getElementById(findID);
+          e.style.display = "none";
+        }
+
+        document.getElementById("showMoreButton").value = "Show More";
+
+      }
+    }
+
+    async function renderHome(XMLHTTPRequest) {
+
+      var jsonDoc;
+      try {
+        jsonDoc = JSON.parse(XMLHTTPRequest.responseText);
+      } catch {}
+
+      //cnn
+      var cnn = jsonDoc.cnnData
+      var fox = jsonDoc.foxData
+
+      var element = 0;
+      for (var i = 0; i < 16; i = i + 4) {
+        var imageTag = "cnn_" + element + "_img";
+        var headlineTag = "cnn_" + element + "_headline";
+        var descriptionTag = "cnn_" + element + "_description";
+        var linkTag = "cnn_" + element + "_link";
+        var imageURL = "url('" + jsonDoc.cnnData[i] + "')";
+        document.getElementById(imageTag).style.backgroundImage = imageURL;
+        document.getElementById(headlineTag).innerHTML = "<br>" + jsonDoc.cnnData[i + 1];
+        document.getElementById(descriptionTag).innerHTML = jsonDoc.cnnData[i + 2];
+        document.getElementById(linkTag).href = jsonDoc.cnnData[i + 3]
+        element = element + 1;
+      }
+
+      var element = 0;
+      for (var i = 0; i < 16; i = i + 4) {
+        var imageTag = "fox_" + element + "_img";
+        var headlineTag = "fox_" + element + "_headline";
+        var descriptionTag = "fox_" + element + "_description";
+        var linkTag = "fox_" + element + "_link";
+        var imageURL = "url('" + jsonDoc.foxData[i] + "')";
+        document.getElementById(imageTag).style.backgroundImage = imageURL;
+        document.getElementById(headlineTag).innerHTML = "<br>" + jsonDoc.foxData[i + 1];
+        document.getElementById(descriptionTag).innerHTML = jsonDoc.foxData[i + 2];
+        document.getElementById(linkTag).href = jsonDoc.foxData[i + 3]
+        element = element + 1;
+      }
+      var array = [];
+      for (var count = 0; count < 30; count++) {
+        var key = String(jsonDoc.wordCloud[count][0]);
+        var value = parseInt(jsonDoc.wordCloud[count][1]) * 24;
+        var insert = {
+          word: key,
+          size: value
+        };
+        array.push(insert);
+      }
+      loadWordCloud(array);
+      for (var i = 0; i < 20; i = i + 4) {
+        var backgroundURL = "url('" + jsonDoc.generalData[i] + "')";
+        document.getElementById("topStory").style.backgroundImage = backgroundURL;
+        document.getElementById("title").innerHTML = jsonDoc.generalData[i + 1] + "<br><br>";
+        document.getElementById("description").innerHTML = jsonDoc.generalData[i + 2];
+        document.getElementById("title").href = jsonDoc.generalData[i + 3];
+        await new Promise(r => setTimeout(r, 3000));
+        if (i == 16) {
+          i = 0;
+        }
+      }
+
+    }
+
+    function changeMainPage(renderHome) {
+      document.getElementById("button1").style.backgroundColor = "#474747";
+      document.getElementById("button1").style.color = "white";
+      document.getElementById("button2").style.backgroundColor = "white";
+      document.getElementById("button2").style.color = "black";
+
+      var home = document.getElementById("content1");
+      home.style.display = "block";
+      var search = document.getElementById("content2");
+      search.style.display = "none";
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          renderHome(xmlhttp);
+        }
+      }
+      xmlhttp.open("GET", "/load", true); //open, send, responseText are
+      xmlhttp.send(); //properties of XMLHTTPRequest
+    }
+
+    function changeSearchPage(renderHome) {
+      document.getElementById("button1").style.backgroundColor = "white";
+      document.getElementById("button1").style.color = "black";
+      document.getElementById("button2").style.backgroundColor = "#474747";
+      document.getElementById("button2").style.color = "white";
+      var home = document.getElementById("content1");
+      home.style.display = "none";
+      var search = document.getElementById("content2");
+      search.style.display = "block";
+      var table = document.getElementById("results");
+      loadSearchPage();
+    }
+
+    function loadSearchPage() {
+      let from = new Date();
+      let to = new Date();
+      from.setDate(from.getDate() - 7);
+      document.getElementById('from').valueAsDate = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+      document.getElementById('to').valueAsDate = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+      var t = document.getElementById("results");
+
+      t.style.display = "none";
+      findSources();
+    }
+
+    function clearSearchFields() {
+      var home = document.getElementById("content1");
+      home.style.display = "none";
+      var search = document.getElementById("content2");
+      search.style.display = "block";
+      document.getElementById("searchForm").reset();
+      let from = new Date();
+      let to = new Date();
+
+      from.setDate(from.getDate() - 7);
+      document.getElementById('from').valueAsDate = from;
+      document.getElementById('to').valueAsDate = to;
+
+      var t = document.getElementById("results");
+      t.style.display = "none";
+      var more = document.getElementById("showMoreButton");
+      more.style.display = "none";
+
+    }
+
+
+    function loadSearch(xml) {
+
+      var jsonDoc;
+      try {
+        jsonDoc = JSON.parse(xml.responseText);
+      } catch {
+        console.log("problem");
+      }
+      var results = jsonDoc.results;
+      global_results = results;
+      document.getElementById("results").style.display = "table";
+      var table = document.getElementById("results");
+      console.log(jsonDoc);
+      var numResults = results.length / 7;
+      var numToShow = numResults;
+      console.log(results);
+      console.log(numToShow);
+      if(numResults > 5){
+        numToShow = 5;
+        document.getElementById("showmore").style.display = "block";
+      }
+      else{
+        document.getElementById("showmore").style.display = "none";
+      }
+      for (var i = 0; i < numToShow; i = i + 1) {
+        var findID = "result_" + i;
+        var e = document.getElementById(findID);
+        e.style.display = "table";
+        var imageTag = "result_img_" + i;
+        var imageURL = "url('" + results[i * 7 + 0] + "')";
+        var headlineTag = "result_" + i + "_headline";
+        var descriptionTag = "result_" + i + "_description";
+        document.getElementById(headlineTag).innerHTML = results[i * 7 + 1];
+        document.getElementById(descriptionTag).innerHTML = results[i * 7 + 2];
+        document.getElementById(imageTag).style.backgroundImage = imageURL;
+      }
+      for(var i = numToShow; i < 15; i = i +1){
+        var findID = "result_" + i;
+        var e = document.getElementById(findID);
+        e.style.display = "none";
+      }
+
+
+    }
+
+    function makePythonCall() {
+      var t = document.getElementById("results");
+      t.style.display = "none";
+      var home = document.getElementById("content1");
+      home.style.display = "none";
+      var search = document.getElementById("content2");
+      search.style.display = "block";
+
+      var x = document.getElementsByClassName("resultElement");
+      for (var i = 0; i < x.length; i++) {
+        x[i].display = "none";
+      }
+
+
+
+      var k = document.getElementById("keyword").value;
+      var f = document.getElementById("from").value;
+      var t = document.getElementById("to").value;
+      var c = document.getElementById("category").value;
+      var s = document.getElementById("source").value;
+      let today = new Date();
+      let earliestDate = new Date();
+      earliestDate.setDate(today.getDate() - 30);
+
+      document.getElementById('placeholder').valueAsDate = new Date(earliestDate.getFullYear(), earliestDate.getMonth(), earliestDate.getDate());
+      var start = document.getElementById('placeholder').value;
+      if (f < start) {
+        window.alert("You are trying to request results too far in the past. Your plan permits you to request articles as far back as " + start + ", but you have requested " + f + ". To extend this please upgrade to a paid plan.");
+      } else if (f > t) {
+        window.alert("Incorrect time");
+      } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            loadSearch(xmlhttp);
+          }
+        }
+        xmlhttp.open("GET", "/search?k=" + k + "&f=" + f + "&t=" + t + "&c=" + c + "&s=" + s, true); //open, send, responseText are
+        xmlhttp.send(); //properties of XMLHTTPRequest
+      }
+    }
+
+    function loadSources(xml) {
+      var jsonDoc;
+      try {
+        jsonDoc = JSON.parse(xml.responseText);
+      } catch {}
+
+      var select = document.getElementById("source");
+      var length = select.options.length;
+      for (i = length - 1; i >= 0; i--) {
+        select.options[i] = null;
+      }
+      var element = document.createElement("option");
+      element.textContent = "all";
+      element.value = "all";
+      document.getElementById("source").appendChild(element);
+      for (var i = 1; i <= jsonDoc.category.sources.length; i = i + 1) {
+        var element = document.createElement("option");
+        element.textContent = jsonDoc.category.sources[i].name;
+        element.value = jsonDoc.category.sources[i].id;
+        document.getElementById("source").appendChild(element);
+      }
+    }
+
+    function findSources() {
+      var Category = document.getElementById("category").value;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          loadSources(xmlhttp);
+        }
+      }
+      xmlhttp.open("GET", "/" + Category, true); //open, send, responseText are
+      xmlhttp.send(); //properties of XMLHTTPRequest
+
+    }
+    var cardClosed;
+
+    function expandCard(num) {
+      console.log(num);
+      console.log(cardClosed);
+      if(cardClosed == num){
+        cardClosed = -1;
+      }
+      else{
+        var id = "expand_" + num;
+        document.getElementById(id).style.height = "250px";
+        var descriptionID = "result_"
+        id + "_description"
+        document.getElementById("close_" + num).style.display = "inline";
+        var authorId = "result_" + num + "_author";
+        var sourceId = "result_" + num + "_source";
+        var dateId = "result_" + num + "_date";
+        var linkId = "result_" + num + "_link";
+        var linkDiv = linkId + "_div";
+        document.getElementById(authorId).style.display = "inline";
+        document.getElementById(sourceId).style.display = "inline";
+        document.getElementById(dateId).style.display = "inline";
+        document.getElementById(linkDiv).style.display = "inline";
+        var date = new Date(global_results[7 * num + 5])
+        document.getElementById(authorId).innerHTML = "<span style=\"font-weight:bold\">Author: </span>" + global_results[7 * num + 3] + "<br>";
+        document.getElementById(sourceId).innerHTML = "<span style=\"font-weight:bold\">Source: </span>" + global_results[7 * num + 4] + "<br>";
+        document.getElementById(dateId).innerHTML = "<span style=\"font-weight:bold\">Date: </span>" + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+        document.getElementById(linkId).href = global_results[7 * num + 6];
+      }
+    }
+    function closeCard(num) {
+      var card = "expand_" + num;
+      var authorId = "result_" + num + "_author";
+      var sourceId = "result_" + num + "_source";
+      var dateId = "result_" + num + "_date";
+      var linkId = "result_" + num + "_link";
+      var linkDiv = linkId + "_div";
+      var close = "close_" + num;
+      document.getElementById(close).style.display = "none"
+      document.getElementById(authorId).style.display = "none";
+      document.getElementById(sourceId).style.display = "none";
+      document.getElementById(dateId).style.display = "none";
+      document.getElementById(linkDiv).style.display = "none";
+
+      document.getElementById(card).style.height = "200px";
+      cardClose = num;
+      event.stopPropagation();
+    }
+
+    document.getElementById("button1").addEventListener("click", function() {
+      changeMainPage(renderHome)
+    }, false);
+    document.getElementById("button2").addEventListener("click", function() {
+      changeSearchPage(renderHome)
+    }, false);
+    document.getElementById("search").addEventListener("click", function() {
+      makePythonCall()
+    }, false);
+    document.getElementById("clear").addEventListener("click", function() {
+      clearSearchFields()
+    }, false);
+    document.getElementById("expand_0").addEventListener("click", function() {
+      expandCard("0")
+    }, false);
+    document.getElementById("result_1").addEventListener("click", function() {
+      expandCard("1")
+    }, false);
+    document.getElementById("result_2").addEventListener("click", function() {
+      expandCard("2")
+    }, false);
+    document.getElementById("result_3").addEventListener("click", function() {
+      expandCard("3")
+    }, false);
+    document.getElementById("result_4").addEventListener("click", function() {
+      expandCard("4")
+    }, false);
+    document.getElementById("result_5").addEventListener("click", function() {
+      expandCard("5")
+    }, false);
+    document.getElementById("result_6").addEventListener("click", function() {
+      expandCard("6")
+    }, false);
+    document.getElementById("result_7").addEventListener("click", function() {
+      expandCard("7")
+    }, false);
+    document.getElementById("result_8").addEventListener("click", function() {
+      expandCard("8")
+    }, false);
+    document.getElementById("result_9").addEventListener("click", function() {
+      expandCard("9")
+    }, false);
+    document.getElementById("result_10").addEventListener("click", function() {
+      expandCard("10")
+    }, false);
+    document.getElementById("result_11").addEventListener("click", function() {
+      expandCard("11")
+    }, false);
+    document.getElementById("result_12").addEventListener("click", function() {
+      expandCard("12")
+    }, false);
+    document.getElementById("result_13").addEventListener("click", function() {
+      expandCard("13")
+    }, false);
+    document.getElementById("result_14").addEventListener("click", function() {
+      expandCard("14")
+    }, false);
+    document.getElementById("close_0").addEventListener("click", function() {
+      closeCard("0")
+    }, false);
+    document.getElementById("close_1").addEventListener("click", function() {
+      closeCard("1")
+    }, false);
+    document.getElementById("close_2").addEventListener("click", function() {
+      closeCard("2")
+    }, false);
+    document.getElementById("close_3").addEventListener("click", function() {
+      closeCard("3")
+    }, false);
+    document.getElementById("close_4").addEventListener("click", function() {
+      closeCard("4")
+    }, false);
+    document.getElementById("close_5").addEventListener("click", function() {
+      closeCard("5")
+    }, false);
+    document.getElementById("close_6").addEventListener("click", function() {
+      closeCard("6")
+    }, false);
+    document.getElementById("close_7").addEventListener("click", function() {
+      closeCard("7")
+    }, false);
+    document.getElementById("close_8").addEventListener("click", function() {
+      closeCard("8")
+    }, false);
+    document.getElementById("close_9").addEventListener("click", function() {
+      closeCard("9")
+    }, false);
+    document.getElementById("close_10").addEventListener("click", function() {
+      closeCard("10")
+    }, false);
+    document.getElementById("close_11").addEventListener("click", function() {
+      closeCard("11")
+    }, false);
+    document.getElementById("close_12").addEventListener("click", function() {
+      closeCard("12")
+    }, false);
+    document.getElementById("close_13").addEventListener("click", function() {
+      closeCard("13")
+    }, false);
+    document.getElementById("close_14").addEventListener("click", function() {
+      closeCard("14")
+    }, false);
+  </script>
+</BODY>
+
+</HTML>

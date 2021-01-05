@@ -1,0 +1,161 @@
+<HTML>
+
+<HEAD>
+  <script type="text/javascript">
+  var jsonDoc;
+
+  function doesFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', urlToFile, false);
+    console.log("test");
+    try{
+      xhr.send();
+    }
+    catch(e){
+
+    }
+
+    if (xhr.status == "200") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+  function loadJSON (url) {
+
+    var result = doesFileExist(url);
+
+    if (result == true) {
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.open("GET",url,false); //open, send, responseText are
+      xmlhttp.send(); //properties of XMLHTTPRequest
+
+
+      jsonDoc=xmlhttp.responseText;
+
+      return jsonDoc;
+    } else {
+        alert("File does not exist");
+
+    }
+   }
+  // ....... processing the document goes here
+
+  function loadPage(){
+    var url = document.getElementById("jsonFile").value;
+    var jsonDoc = loadJSON(url);
+    console.log(jsonDoc);
+
+    var temp = JSON.parse(jsonDoc);
+    var Mainline = temp.Mainline;
+    var table = Mainline.Table;
+    var header = table.Header;
+    var row = table.Row;
+    console.log(row);
+    if(row == null){
+      alert("There are no buildings in that file");
+    }
+    else{
+     var html_text = "<html><head><title>JSON Parse Result</title></head><body>";
+     html_text += "<table style='border: 1px; border-style: solid;'>";
+
+     html_text += "<tr>";
+
+     for(var i = 0; i < header.Data.length; i++){
+       html_text += "<td style='border: 1px; border-style: solid; font-weight:bold; text-align: center; margin: auto;'>";
+       html_text += header.Data[i];
+       html_text += "</td>";
+     }
+
+     html_text += "</tr>";
+
+     for(var i = 0; i < row.length; i++){
+       html_text += "<tr>";
+       var tempRow = row[i];
+       html_text += "<td style='border: 1px; border-style: solid;'>";
+       html_text += tempRow.Rank;
+       html_text += "</td>";
+
+       html_text += "<td style='border: 1px; border-style: solid;'>";
+       html_text += tempRow.Name;
+       html_text += "</td>";
+
+       html_text += "<td style='border: 1px; border-style: solid;'>";
+       html_text += "<ul>";
+       for(var j = 0; j < tempRow.Hubs.Hub.length; j++){
+         if(j == 0){
+           html_text += "<li style='font-weight:bold;'>";
+         }
+         else{
+           html_text += "<li>";
+         }
+         var tempHub = tempRow.Hubs.Hub[j];
+         html_text += tempHub;
+         html_text += "</li>";
+       }
+       html_text += "</ul>";
+       html_text += "</td>";
+
+       html_text += "<td style='border: 1px; border-style: solid;'>";
+       html_text += tempRow.Height;
+       html_text += "</td>";
+
+       html_text += "<td style='border: 1px; border-style: solid;'>";
+       html_text += "<a href='";
+       html_text += tempRow.HomePage;
+       html_text += "'>";
+       html_text += tempRow.HomePage;
+       html_text += "</a>";
+       html_text += "</td>";
+
+       html_text += "<td style='border: 1px; border-style: solid;'><img src='";
+       html_text += tempRow.Logo;
+       html_text += "' width='";
+       html_text += 300;
+       html_text += "'height='"
+       html_text += 300;
+       html_text += "'></td>";
+
+       html_text += "</tr>";
+
+     }
+
+
+
+     html_text += "</table>";
+     html_text += "</bo" + "dy> </html>";
+
+     var newWindow = open('','windowName','height=800,width=800');
+
+     //var tsdf = "<h1> HII </h1>";
+     //newWindow.document.write(tsdf);
+     newWindow.document.write(html_text);
+   }
+  //  document.write(html_text);
+  }
+
+  </script>
+
+<TITLE>HW4</TITLE>
+<style>
+
+</style>
+</HEAD>
+
+<body>
+<div class="wrapper" style="margin: auto; margin-top: 150px; text-align: center;">
+  <h4 style="font-weight: bold">Enter URL for list of tallest building JSON File</h2>
+
+
+<form>
+  <input type="text" id="jsonFile" name="jsonFile" value=""><br><br>
+  <button type="button" onclick="return loadPage()">Submit Query</button>
+</form>
+
+
+</div>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,91 @@
+h1{
+  font-family: Georgia;
+  font-weight: 400;
+  font-size: 60px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+h3{
+  display: inline-block;
+  margin-left: 4%;
+  font-weight: lighter;
+}
+
+h5{
+  margin: auto;
+  text-align: center;
+  margin-top: 2em;
+  font-weight: lighter;
+}
+
+
+
+img {
+    margin: 3px;
+    text-align: center;
+    object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  font-style: italic;
+  font-family: Georgia;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  margin-right: auto;
+  margin-left: auto;
+
+}
+
+body{
+  background-color: white;
+  margin: 15px;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  height: 1200px;
+  width: 1100px;
+}
+
+.wrapper{
+  width: 950px;
+  margin-left: 100px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.links {
+  text-align: center;
+}
+
+.top{
+  width: 800px;
+  padding: 10px;
+  border: 1px solid black;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center{
+  width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+}
+
+.bottom{
+  padding: 10;
+  width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  text-align: center;
+}
